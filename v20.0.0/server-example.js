@@ -1,31 +1,33 @@
-const { Api, JsonRpc } = require('eosjs')
-const { JsSignatureProvider } = require('eosjs/dist/eosjs-jssig')
+const { Api, JsonRpc } = require('eosjs');
+const { JsSignatureProvider } = require('eosjs/dist/eosjs-jssig');
 const { convertLegacyPublicKeys } = require('eosjs/dist/eosjs-numeric');
 
-const fetch = require('node-fetch')
-const { TextDecoder, TextEncoder } = require('util')
+const fetch = require('node-fetch');
 
-const rpc = new JsonRpc('http://jungle.greymass.com', { fetch })
+const { TextDecoder, TextEncoder } = require('util');
+
+// Setting the endpoint to use.
+const rpc = new JsonRpc('http://jungle.greymass.com', { fetch });
 
 // The cosigner account expected to sign this transaction
-const cosignerAccount = 'greymassfuel'
+const cosignerAccount = 'greymassfuel';
 
 // The cosigner permission expected to sign this transaction
-const cosignerPermission = 'cosign'
+const cosignerPermission = 'cosign';
 
 // The user account performing the transaction
-const userAccount = 'greymasstest'
+const userAccount = 'greymasstest';
 
 // The user account permission performing the transaction
-const userPermission = 'active'
+const userPermission = 'active';
 
 // The signature provider + private key for the user account to partially sign
-const signatureProvider = new JsSignatureProvider(['WIFPRIVATEKEY'])
+const signatureProvider = new JsSignatureProvider(['WIFPRIVATEKEY']);
 
 // A custom cosigner AuthorityProvider for EOSJS v2
-//   This provider overrides the checks on all keys,
-//   allowing a partially signed transaction to be
-//   broadcast to the API node.
+// This provider overrides the checks on all keys,
+// allowing a partially signed transaction to be
+// broadcast to the API node.
 class CosignAuthorityProvider {
   async getRequiredKeys(args) {
     const { transaction } = args;
@@ -33,8 +35,8 @@ class CosignAuthorityProvider {
     transaction.actions.forEach((action, ti) => {
       action.authorization.forEach((auth, ai) => {
         // If the authorization matches the expected cosigner
-        //   then remove it from the transaction while checking
-        //   for what public keys are required
+        // then remove it from the transaction while checking
+        // for what public keys are required
         if (
           auth.actor === cosignerAccount
           && auth.permission === cosignerPermission
@@ -42,7 +44,7 @@ class CosignAuthorityProvider {
           delete transaction.actions[ti].authorization.splice(ai, 1)
         }
       })
-    })
+    });
     return convertLegacyPublicKeys((await rpc.fetch('/v1/chain/get_required_keys', {
       transaction,
       available_keys: args.availableKeys,
@@ -57,9 +59,10 @@ const api = new Api({
   signatureProvider,
   textDecoder: new TextDecoder(),
   textEncoder: new TextEncoder()
-})
+});
 
 async function main() {
+  // Broadcast signed action while specifying both authorizations.
   const result = await api.transact({
     actions: [{
       account: 'eosio',
@@ -83,8 +86,9 @@ async function main() {
   }, {
     blocksBehind: 3,
     expireSeconds: 30,
-  })
+  });
+
   console.log(result)
 }
 
-main()
+main();
