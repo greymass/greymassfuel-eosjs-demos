@@ -19,10 +19,10 @@ const cosignerPermission = 'cosign';
 const userAccount = 'greymasstest';
 
 // The user account permission performing the transaction
-const userPermission = 'active';
+const userPermission = 'voting';
 
 // The signature provider + private key for the user account to partially sign
-const signatureProvider = new JsSignatureProvider(['WIFPRIVATEKEY']);
+const signatureProvider = new JsSignatureProvider(['5K2roC8auERQDnmYEfCwMYrNqkFNfUTnYF68aknmhwzT4ojgfVw']);
 
 // A custom cosigner AuthorityProvider for EOSJS v2
 // This provider overrides the checks on all keys,
