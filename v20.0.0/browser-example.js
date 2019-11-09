@@ -1,13 +1,9 @@
-const { Api, JsonRpc } = require('eosjs');
-const { JsSignatureProvider } = require('eosjs/dist/eosjs-jssig');
-const { convertLegacyPublicKeys } = require('eosjs/dist/eosjs-numeric');
-
-const fetch = require('node-fetch');
-
-const { TextDecoder, TextEncoder } = require('util');
+import { Api, JsonRpc } from 'eosjs';
+import { JsSignatureProvider } from 'eosjs/dist/eosjs-jssig';
+import { convertLegacyPublicKeys } from 'eosjs/dist/eosjs-numeric';
 
 // Setting the endpoint to use.
-const rpc = new JsonRpc('http://jungle.greymass.com', { fetch });
+const rpc = new JsonRpc('http://jungle.greymass.com');
 
 // The cosigner account expected to sign this transaction
 const cosignerAccount = 'greymassfuel';
@@ -52,16 +48,16 @@ class CosignAuthorityProvider {
   }
 }
 
-// Pass in new authorityProvider
-const api = new Api({
-  authorityProvider: new CosignAuthorityProvider(),
-  rpc,
-  signatureProvider,
-  textDecoder: new TextDecoder(),
-  textEncoder: new TextEncoder()
-});
+async function proxyVote() {
+  // Pass in new authorityProvider.
+  const api = new Api({
+    authorityProvider: new CosignAuthorityProvider(),
+    rpc,
+    signatureProvider,
+    textDecoder: new TextDecoder(),
+    textEncoder: new TextEncoder()
+  });
 
-async function main() {
   // Broadcast signed action while specifying both authorizations.
   const result = await api.transact({
     actions: [{
@@ -91,4 +87,4 @@ async function main() {
   console.log(result)
 }
 
-main();
+proxyVote();

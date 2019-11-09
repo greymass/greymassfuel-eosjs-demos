@@ -1,4 +1,4 @@
-const Eos = require('eosjs');
+import Eos from 'eosjs';
 
 // The cosigner account expected to sign this transaction.
 const cosignerAccount = 'greymassfuel';
@@ -19,15 +19,11 @@ const httpEndpoint = 'https://jungle.greymass.com';
 const chainId = 'e70aaab8997e1dfce58fbfac80cbbb8fecec7b99cf982a9444273cbc64c41473';
 
 // The private key for the user account to partially sign.
-const keyProvider =  ['WIFPRIVATEKEY'];
+const keyProvider = ['WIFPRIVATEKEY'];
 
-async function main() {
+async function proxyVote() {
   // Connect to a testnet or mainnet.
-  const eos = Eos({
-    chainId,
-    httpEndpoint,
-    keyProvider
-  });
+  const eos = Eos({httpEndpoint, chainId, keyProvider});
 
   // Broadcast signed action while specifying both authorizations.
   const result = await eos.voteproducer(
@@ -38,13 +34,13 @@ async function main() {
       broadcast: true,
       sign: true,
       authorization: [
-        {"actor":cosignerAccount,"permission":cosignerPermission},
-        {"actor":userAccount,"permission":userPermission}
+        { actor: cosignerAccount, permission: cosignerPermission },
+        { actor: userAccount, permission: userPermission }
       ],
     }
   );
 
-  console.log(result)
+  console.log(result);
 }
 
-main();
+proxyVote();
