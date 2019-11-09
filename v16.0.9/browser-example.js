@@ -1,4 +1,4 @@
-const Eos = require('eosjs');
+import Eos from 'eosjs';
 
 // The cosigner account expected to sign this transaction.
 const cosignerAccount = 'greymassfuel';

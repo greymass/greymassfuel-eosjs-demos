@@ -1,6 +1,6 @@
-const { Api, JsonRpc } = require('eosjs');
-const { JsSignatureProvider } = require('eosjs/dist/eosjs-jssig');
-const { convertLegacyPublicKeys } = require('eosjs/dist/eosjs-numeric');
+import { Api, JsonRpc } from 'eosjs';
+import { JsSignatureProvider } from 'eosjs/dist/eosjs-jssig';
+import { convertLegacyPublicKeys } from 'eosjs/dist/eosjs-numeric';
 
 // Setting the endpoint to use.
 const rpc = new JsonRpc('http://jungle.greymass.com');
