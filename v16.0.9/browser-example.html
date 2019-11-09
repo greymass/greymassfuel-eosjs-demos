@@ -5,7 +5,7 @@
       const cosignerAccount = 'greymassfuel';
 
       // The cosigner permission expected to sign this transaction.
-      const cosignerPermission = 'active';
+      const cosignerPermission = 'cosign';
 
       // The user account performing the transaction.
       const userAccount = 'greymasstest';
@@ -20,9 +20,9 @@
       const chainId = 'e70aaab8997e1dfce58fbfac80cbbb8fecec7b99cf982a9444273cbc64c41473';
 
       // The private key for the user account to partially sign.
-      const keyProvider = 'WIFPRIVATEKEY';
+      const keyProvider = ['WIFPRIVATEKEY'];
 
-      async function proxyVotes() {
+      async function proxyVote() {
         // Connect to a testnet or mainnet.
         const eos = Eos({httpEndpoint, chainId, keyProvider});
 
@@ -63,7 +63,7 @@
         <h4>
             Click on this button to proxy your votes.
         </h4>
-        <button onclick="proxyVotes()">Proxy Votes</button>
+        <button onclick="proxyVote()">Proxy Votes</button>
     </div>
 </body>
 

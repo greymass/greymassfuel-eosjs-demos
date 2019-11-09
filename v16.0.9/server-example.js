@@ -19,7 +19,7 @@ const httpEndpoint = 'https://jungle.greymass.com';
 const chainId = 'e70aaab8997e1dfce58fbfac80cbbb8fecec7b99cf982a9444273cbc64c41473';
 
 // The private key for the user account to partially sign.
-const keyProvider =  'WIFPRIVATEKEY';
+const keyProvider =  ['WIFPRIVATEKEY'];
 
 async function main() {
   // Connect to a testnet or mainnet.

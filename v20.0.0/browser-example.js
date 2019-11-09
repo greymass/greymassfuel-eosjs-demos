@@ -9,7 +9,7 @@ const rpc = new JsonRpc('http://jungle.greymass.com');
 const cosignerAccount = 'greymassfuel';
 
 // The cosigner permission expected to sign this transaction
-const cosignerPermission = 'active';
+const cosignerPermission = 'cosign';
 
 // The user account performing the transaction
 const userAccount = 'greymasstest';
@@ -59,7 +59,7 @@ async function proxyVote() {
   });
 
   // Broadcast signed action while specifying both authorizations.
-  await api.transact({
+  const result = await api.transact({
     actions: [{
       account: 'eosio',
       name: 'voteproducer',
@@ -83,6 +83,8 @@ async function proxyVote() {
     blocksBehind: 3,
     expireSeconds: 30,
   });
+
+  console.log(result)
 }
 
 proxyVote();
