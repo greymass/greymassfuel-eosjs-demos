@@ -40,7 +40,8 @@
             ],
           }
         );
-
+        document.getElementById("link").innerHTML = `<a href='https://jungle.bloks.io/transaction/${result.transaction_id}'>View ${result.transaction_id} on bloks.io</a>`
+        document.getElementById("result").innerHTML = JSON.stringify(result, true, 2)
         console.log(result);
       }
     </script>
@@ -64,7 +65,7 @@
             Click on this button to proxy your votes.
         </h4>
         <button onclick="proxyVote()">Proxy Votes</button>
+        <div id="link"></div>
+        <code><pre id="result"></pre></code>
     </div>
 </body>
-
-
