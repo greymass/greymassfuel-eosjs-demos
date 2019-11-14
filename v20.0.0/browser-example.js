@@ -57,28 +57,38 @@ async function proxyVote() {
     textDecoder: new TextDecoder(),
     textEncoder: new TextEncoder()
   });
-
-  // Broadcast signed action while specifying both authorizations.
+  // Sign and broadcast the transaction, with two actions
   const result = await api.transact({
-    actions: [{
-      account: 'eosio',
-      name: 'voteproducer',
-      authorization: [
-        {
+    actions: [
+      // The first action in the transaction must be a blank `greymassnoop:noop`
+      {
+        // The authorization for the noop only needs to include the cosigner.
+        // This action and its authorization are what pay the resource costs for the
+        // entire transaction and all its actions.
+        authorization: [{
           actor: cosignerAccount,
           permission: cosignerPermission,
-        },
-        {
+        }],
+        account: 'greymassnoop',
+        name: 'noop',
+        data: {}
+      },
+      // The second (or third, fourth...) action in the transaction can be anything
+      {
+        // The only authorization required is that of the user
+        authorization: [{
           actor: userAccount,
           permission: userPermission,
-        }
-      ],
-      data: {
-        voter: userAccount,
-        proxy: 'greymassvote',
-        producers: []
-      },
-    }]
+        }],
+        account: 'eosio',
+        name: 'voteproducer',
+        data: {
+          voter: userAccount,
+          proxy: 'greymassvote',
+          producers: []
+        },
+      }
+    ]
   }, {
     blocksBehind: 3,
     expireSeconds: 30,
